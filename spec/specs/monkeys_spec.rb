@@ -1,14 +1,23 @@
-require 'combustion'
-
-Combustion.path = 'spec/platforms/rails'
-Combustion.initialize! :sprockets
+require 'fileutils'
 
 
-describe 'rails' do
+describe 'monkeys' do
 
   before :all do
 
-    @sprockets = Rails.application.assets
+    @sprockets = GET_SPROCKETS.call
+
+  end
+
+  after :all do
+
+    FileUtils.rm_rf OUPTPUTS_DIR
+
+  end
+
+  it 'monkeys path in sprockets' do
+
+    expect( @sprockets.paths ).to include Monkeys::Changer.folder.to_s
 
   end
 

@@ -1,5 +1,4 @@
 require 'pry'
-require 'fileutils'
 
 
 CASES_DIR = Pathname.new( __FILE__ ).dirname.join( 'cases' )
@@ -19,7 +18,7 @@ end
 
   if Gem.find_files( gem_name ).empty? == false
 
-    require "specs/#{ gem_name }_spec"
+    require "platforms/#{ gem_name }/runner"
 
     break
 
@@ -28,4 +27,4 @@ end
 end
 
 
-FileUtils.rm_rf OUPTPUTS_DIR
+require 'specs/monkeys_spec'
