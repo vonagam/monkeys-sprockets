@@ -9,17 +9,12 @@ module Monkeys
 
       initializer 'monkeys_sprockets.setup_engine', group: :all do | app |
 
-        sprockets = app.assets
-
-        folder = app.root.join 'vendor/assets/monkeys'
-
-        Monkeys::Changer.folder = folder
-
-        sprockets.append_path folder
+        Monkeys::Changer.folder ||= app.root.join 'vendor/assets/monkeys'
+        Monkeys::Changer.sprockets = app.assets
 
         app.config.after_initialize do
 
-          Monkeys::Changer.execute app.assets
+          Monkeys::Changer.ready = true
 
         end
 

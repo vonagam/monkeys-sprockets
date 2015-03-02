@@ -20,12 +20,12 @@ module Monkeys
 
       line = lines[ @number ]
 
-      error( line ) if @check && ! line[ @check ]
+      error( line ) if @check && ! line.slice( @check )
 
       case @replace
 
-        when String then lines[ @number ] = @replace
         when Proc then lines[ @number ] = @replace.call line
+        when String, Array then lines[ @number ] = @replace
 
       end
 

@@ -1,13 +1,5 @@
-Monkeys::Changer.tap do | change |
+Rails.application.config.assets.paths << CASES_DIR
 
-  change.file 'library.js' do | file |
+Rails.application.assets.cache = :nil
 
-    file.line 1, "var x = [\n" do | line |
-
-      [ 'hello', 'manki' ]
-
-    end
-
-  end
-
-end
+Monkeys::Changer.folder = OUPTPUTS_DIR

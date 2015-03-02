@@ -1,14 +1,15 @@
-require 'combustion'
+require 'middleman'
+require 'middleman-core/application.rb'
+require 'monkeys-sprockets'
 
-Combustion.path = 'spec/platforms/rails'
-Combustion.initialize! :sprockets
 
-
-describe 'rails' do
+describe 'middleman' do
 
   before :all do
 
-    @sprockets = Rails.application.assets
+    ENV[ 'MM_ROOT' ] = 'spec/platforms/middleman'
+
+    @sprockets = Middleman.server.inst.sprockets
 
   end
 

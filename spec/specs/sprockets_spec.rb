@@ -1,14 +1,20 @@
-require 'combustion'
-
-Combustion.path = 'spec/platforms/rails'
-Combustion.initialize! :sprockets
+require 'sprockets'
+require 'monkeys-sprockets'
 
 
-describe 'rails' do
+describe 'sprockets' do
 
   before :all do
 
-    @sprockets = Rails.application.assets
+    @sprockets = Sprockets::Environment.new
+
+    @sprockets.append_path CASES_DIR
+
+    Monkeys::Changer.folder = OUPTPUTS_DIR
+
+    Monkeys::Changer.sprockets = @sprockets
+
+    Monkeys::Changer.ready = true
 
   end
 

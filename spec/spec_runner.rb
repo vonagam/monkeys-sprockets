@@ -1,18 +1,18 @@
 require 'pry'
-require 'execjs'
-
-=begin
-CASES_DIR = Pathname.new( __FILE__ ).dirname.join( 'cases' ).to_s
+require 'fileutils'
 
 
-CASES = Dir[ 'spec/cases/**/entry.*' ].each do | entry |
+CASES_DIR = Pathname.new( __FILE__ ).dirname.join( 'cases' )
 
-  entry.sub! 'spec/cases/', ''
 
-  entry.sub! /^([^\.]+)\..+$/, '\1'
+OUPTPUTS_DIR = Pathname.new( __FILE__ ).dirname.join( 'outputs' )
+
+
+CASES = Dir[ 'spec/cases/**/change.rb' ].each do | entry |
+
+  entry.sub! /spec\/cases\/(.+)\/change.rb/, '\1'
 
 end
-=end
 
 
 [ 'rails', 'middleman', 'sprockets' ].each do | gem_name |
@@ -26,3 +26,6 @@ end
   end
 
 end
+
+
+FileUtils.rm_rf OUPTPUTS_DIR

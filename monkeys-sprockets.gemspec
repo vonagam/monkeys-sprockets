@@ -25,7 +25,6 @@ Gem::Specification.new do | spec |
 
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'appraisal'
-  spec.add_development_dependency 'execjs'
   spec.add_development_dependency 'pry'
 
   spec.add_dependency 'sprockets', '>= 2.2.2'

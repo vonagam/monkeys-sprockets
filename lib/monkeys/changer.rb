@@ -7,22 +7,70 @@ module Monkeys
 
     @filers = []
     @folder = nil
+    @sprockets = nil
+    @ready = false
 
-    def self.folder= ( path )
+    class << self
 
-      @folder = Pathname.new path
+      attr_reader :folder
+      attr_reader :sprockets
+      attr_reader :ready
 
-    end
+      def folder= ( path )
 
-    def self.file ( path, &block )
+        @folder = Pathname.new path
 
-      @filers << Filer.new( path, &block )
+        add_folder_to_sprockets
 
-    end
+        execute
 
-    def self.execute ( sprockets )
+      end
 
-      @filers.each { | filer | filer.execute( sprockets, @folder ) }
+      def sprockets= ( sprockets )
+
+        @sprockets = sprockets
+
+        add_folder_to_sprockets
+
+        execute
+
+      end
+
+      def file ( path, &block )
+
+        filer = Filer.new( self, path, &block )
+
+        @filers << filer
+
+        execute
+
+      end
+
+      def ready= ( value )
+
+        @ready = value
+
+        execute
+
+      end
+
+      private
+
+      def add_folder_to_sprockets
+
+        @sprockets.append_path @folder if @sprockets && @folder
+
+      end
+
+      def execute
+
+        return unless @ready && @sprockets && @folder
+
+        @filers.each &:execute
+
+        @filers.clear
+
+      end
 
     end
 

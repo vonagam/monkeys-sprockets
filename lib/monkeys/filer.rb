@@ -6,40 +6,40 @@ module Monkeys
 
   class Filer
 
-    def initialize ( path, &block )
+    def initialize ( changer, path, &block )
 
+      @changer = changer
       @path = path
       @block = block
-      @liners = []
       @created_in = created_in
 
     end
 
-    def execute ( sprockets, folder )
+    def execute
 
-      origin_path = sprockets.resolve @path
+      origin_path = @changer.sprockets.resolve @path
 
-      result_path = folder.join( 'monkeys', @path )
+      result_path = @changer.folder.join( 'monkeys', @path )
 
       return if is_fresh?( result_path, [ origin_path, @created_in ] )
 
+      @lines = IO.readlines origin_path
+
       @block.call self
 
-      lines = IO.readlines origin_path
-
-      @liners.each { | liner | liner.execute lines }
-
-      lines.flatten!
+      @lines.flatten!
 
       FileUtils.mkdir_p( result_path.dirname ) unless File.directory?( result_path.dirname )
 
-      File.open( result_path, 'w' ) { | file | file.puts lines }
+      File.open( result_path, 'w' ) { | file | file.puts @lines }
 
     end
 
     def line ( *args, &block )
 
-      @liners << Liner.new( *args, &block )
+      liner = Liner.new( *args, &block )
+
+      liner.execute @lines
 
     end
 
