@@ -33,7 +33,7 @@ describe 'monkeys' do
 
         gained = IO.read OUPTPUTS_DIR.join( 'monkeys', name, 'input.txt' )
 
-        expect( expected ).to eq gained
+        expect( gained ).to eq expected
 
       end
 
